@@ -1,13 +1,15 @@
-# Ignore virtual environment
+# Ignore virtual environments
 .venv/
 venv/
 
-# Ignore Python cache
+# Ignore Python cache and compiled files
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 *.pkl
+*.so
+*.dll
 
 # Ignore Jupyter notebook checkpoints
 .ipynb_checkpoints/
@@ -16,12 +18,13 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
-# Ignore temporary data files
+# Ignore data files (raw/processed)
 *.csv
 *.tsv
 *.xlsx
 *.json
 *.parquet
+*.feather
 
 # Ignore model artifacts
 *.h5
@@ -29,7 +32,25 @@ Thumbs.db
 *.pth
 *.joblib
 *.pickle
+*.sav
 
 # Ignore environment files
 .env
+.env.*
 
+# Ignore build/dist
+build/
+dist/
+*.egg-info/
+*.dist-info/
+
+# Ignore IDE/editor configs
+.vscode/
+.idea/
+
+# Ignore logs and reports
+*.log
+*.out
+*.tmp
+*.bak
+*.swp
