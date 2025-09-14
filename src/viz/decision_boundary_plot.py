@@ -50,7 +50,7 @@ def plot_decision_regions(
     cmap=None,
     markers: Optional[list] = None,
     figsize: Tuple[int, int] = (8, 6),
-    title_prefix: Optional[str] = None,     # optional for flexibility
+    title_prefix: Optional[str] = None,     # optional for flexibility.
     show_feature_names: bool = True,
     metric_fn = accuracy_score,
     show: bool = True,
