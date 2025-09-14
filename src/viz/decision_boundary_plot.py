@@ -50,7 +50,7 @@ def plot_decision_regions(
     cmap=None,
     markers: Optional[list] = None,
     figsize: Tuple[int, int] = (8, 6),
-    title_prefix: Optional[str] = None,     # kept but not used in mlxtend-style title
+    title_prefix: Optional[str] = None,     # optional for flexibility
     show_feature_names: bool = True,
     metric_fn = accuracy_score,
     show: bool = True,
@@ -80,7 +80,7 @@ def plot_decision_regions(
         fig = ax.figure
         ax.cla()
 
-    # --- Normalize inputs and feature names (respect show_feature_names) ---
+    # --- Normalize inputs and feature names ---
     if hasattr(X, "iloc"):
         X_arr = X.iloc[:, list(features)].values
         if show_feature_names:
@@ -93,7 +93,7 @@ def plot_decision_regions(
 
     y_arr = np.asarray(y)
 
-    # Clone estimator so we don't mutate user's object
+    # Clone estimator to not mutate user's object
     est = clone(estimator)
 
     # Fit est according to fit_on
@@ -192,17 +192,17 @@ def plot_decision_regions(
     edge_linewidth = max(0.3, 0.6 * scale)
     contour_lw = max(0.3, 0.6 * scale)
 
-    # Crisp discrete regions: use shifted levels (works well for integer labels)
+    # Crisp discrete regions: use shifted levels
     try:
         # Map Z values into indices 0..n_classes-1 consistently
         class_to_idx = {c: i for i, c in enumerate(classes)}
         Z_idx = np.vectorize(class_to_idx.get)(Z)
         levels = np.arange(-0.5, n_classes + 0.5, 1.0)
         cf = ax.contourf(xx, yy, Z_idx, levels=levels, cmap=cmap_listed, alpha=0.25)
-        # draw black boundaries between classes (mlxtend-style)
+        # draw black boundaries between classes
         ax.contour(xx, yy, Z_idx, levels=levels, colors='k', linewidths=contour_lw, alpha=0.6)
     except Exception:
-        # fallback: direct contourf (and attempt to draw boundaries)
+        # fallback: direct contourf
         cf = ax.contourf(xx, yy, Z, cmap=cmap_listed, alpha=0.25)
         try:
             ax.contour(xx, yy, Z, colors='k', linewidths=contour_lw, alpha=0.6)
@@ -238,7 +238,7 @@ def plot_decision_regions(
         )
         handles.append(sc)
 
-    # axes labels (respect show_feature_names)
+    # axes labels
     if show_feature_names:
         ax.set_xlabel(feat_names[0], fontsize=label_font)
         ax.set_ylabel(feat_names[1], fontsize=label_font)
@@ -246,9 +246,8 @@ def plot_decision_regions(
         ax.set_xlabel(f"Feature {features[0]}", fontsize=label_font)
         ax.set_ylabel(f"Feature {features[1]}", fontsize=label_font)
 
-    # -----------------------
-    # Title: estimator name + score in mlxtend-like style
-    # -----------------------
+
+    # Title: estimator name + score
     estimator_name = _get_estimator_name(estimator)
     try:
         y_pred = est.predict(X_eval)
@@ -260,7 +259,7 @@ def plot_decision_regions(
     metric_label = metric_fn.__name__.replace('_', ' ').title()
     title_score = ""
     if score_val is not None:
-        # if metric returns between 0 and 1, display as percentage like mlxtend
+        # if metric returns between 0 and 1, display as percentage
         try:
             if 0.0 <= float(score_val) <= 1.0:
                 title_score = f"{metric_label}: {float(score_val) * 100.0:.2f}%"
@@ -275,7 +274,7 @@ def plot_decision_regions(
     else:
         ax.set_title(f"{estimator_name}", fontsize=title_font, weight='semibold')
 
-    # Legend (scaled) — use markerscale instead of touching internals
+    # Legend (scaled)
     markerscale = max(0.6, scale * 0.9)  # adjust how big legend markers appear relative to plot markers
     ax.legend(
         handles=handles,
@@ -306,11 +305,10 @@ def plot_decision_regions(
     return ax
 
 
-# ---------------------------
+# --------------------------------------
 # Example quick demo (Iris) -- runs if user executes this script directly
-# ---------------------------
+# ------------------------------
 if __name__ == "__main__":
-    # lightweight demo using sklearn's iris dataset
     try:
         from sklearn.datasets import load_iris
         from sklearn.ensemble import RandomForestClassifier
@@ -322,7 +320,7 @@ if __name__ == "__main__":
             clf, X, y, features=(2,3),
             grid_step=0.02,
             proba_overlay=False,
-            figsize=(9,7)  # <--- example custom size
+            figsize=(9,7)
         )
     except Exception as e:
         print('Demo failed:', e)
