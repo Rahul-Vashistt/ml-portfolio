@@ -69,7 +69,7 @@ def load_raw_csv(path: str) -> pd.DataFrame:
 def profile_df(df: pd.DataFrame) -> dict:
     """Return a small profiling dict (shape, dtypes, missing, uniques, numeric summary)."""
     profile = {}
-    profile["shape"] = f"{df.shape} rows × {df.shape[14]} columns"
+    profile["shape"] = f"{df.shape[0]} rows × {df.shape[1]} columns"
     profile["dtypes"] = df.dtypes.apply(lambda x: x.name).to_dict()
     profile["missing_counts"] = df.isna().sum().sort_values(ascending=False).to_dict()
     profile["n_unique"] = df.nunique().to_dict()
